@@ -499,13 +499,14 @@ def greedyAlg(newStock,Cantidad):
     sol= {}
     cont = newStock.shape[0]
     while acum <Cantidad: 
-        cont -= 1
         #vidaUtilMin=newStock.iloc[0]
+        if cont == 0:
+            break
+        cont -= 1
         lote = newStock.iloc[0].lote
         cantCajas = newStock.iloc[0].cajas
         acum = acum + cantCajas
-        if cont == 0:
-            break
+    
         
         if acum<Cantidad:
             sol[lote]=cantCajas
@@ -780,16 +781,16 @@ def make_reduced_groups(data_ov,nro_elms_grupo):
         if (cont <NUMERO_MAXIMOS_ELEMENTOS):
             columnas_no_vacias = df_cliente.columns[~df_cliente.isna().all()]
             aux = pd.concat([aux, df_cliente[columnas_no_vacias]], axis=0) 
-            print(aux)
+            #print(aux)
             cont = cont + df_cliente.shape[0]
         else:    
             list_salidas.append(aux)
-            print("else salidas ", list_salidas)
+            #print("else salidas ", list_salidas)
             aux = df_cliente 
-            print("else aux ", aux)
+            #print("else aux ", aux)
             cont = df_cliente.shape[0]
     list_salidas.append(aux) 
-    print("final list salida ", list_salidas)       
+    #print("final list salida ", list_salidas)       
     return list_salidas
 
 def algoritmo_principal(data_ov, data_stock, cant_depositos, cumplimiento):
@@ -964,7 +965,7 @@ def main(cant_depositos, cumplimiento, lotes_c_picking, lotes_s_picking ):
     #print(salida.columns, data_stock.columns, data_ov.columns)
     salida_base=formato_datos(salida,data_stock,data_ov)
     #envio_datos(salida_base,metricasLog)
-    salida_base.reindex(columns=['orden_de_venta','articulo_id','articulo_desc','deposito','lote','cantidad_a_despachar','vida_util','cliente_id','nombre_del_cliente','fecha_rec']).reset_index(drop=True).to_excel('aplicacion/aplicacion/templates/salida_final.xlsx',index=False)
+    salida_base.reindex(columns=['orden_de_venta','articulo_id','articulo_desc','deposito','lote','cantidad_a_despachar','vida_util','cliente_id','nombre_del_cliente','fecha_rec']).reset_index(drop=True).to_excel('aplicacion\\aplicacion\\templates\\salida_final.xlsx',index=False)
     #print(type(parametros))
     #print(salidas)
     salida=salida.drop_duplicates()
