@@ -8,7 +8,7 @@ from flask import url_for, redirect # para poder redirigir la pagina
 from flask_bootstrap import Bootstrap
 import forms; from forms import FormParametros
 import funciones_Modelos; from funciones_Modelos import *
-#import extract_data; from extract_data import *
+import extract_data; from extract_data import *
 
 import sys
 
@@ -50,7 +50,7 @@ nombres_lotes = [
 
 @app.route("/result/",methods=["get"])
 def result():
-	return send_file('templates/salida_final.xlsx',mimetype='text/xlsx',attachment_filename='resultado_final.xlsx',as_attachment=True)
+	return send_file(r'aplicacion\aplicacion\templates\salida_final.xlsx',mimetype='text/xlsx',attachment_filename='resultado_final.xlsx',as_attachment=True)
 
 
 
@@ -62,28 +62,36 @@ def index():
 def generar_reporte():
 	print("extraigo reporte")
 	#time.sleep(8) 
-	#preferences_df,sales_df,stock_df = extraer_datos_micro()
 	"""
-	pickle.dump(stock_df, open("data_stock_limpio_I.pickle", "wb")) 
-	pickle.dump(sales_df, open("data_ov_limpio_I.pickle", "wb")) 
-	pickle.dump(preferences_df, open("preferences_df_limpio_I.pickle", "wb"))
-	"""
+	preferences_df,sales_df,stock_df = extraer_datos_micro()
+	
+	t = time.time()
+	timestamp_str = str(t)
+	
+	preferences_df.to_csv(f"aplicacion\\aplicacion\historial_input\\preferences_{timestamp_str}.csv")
+	sales_df.to_csv(f"aplicacion\\aplicacion\historial_input\\sales_{timestamp_str}.csv")
+	stock_df.to_csv(f"aplicacion\\aplicacion\historial_input\\stock_{timestamp_str}.csv")
+	
+	pickle.dump(stock_df, open(r"aplicacion\aplicacion\datos\data_stock_limpio_I.pickle", "wb")) 
+	pickle.dump(sales_df, open(r"aplicacion\aplicacion\datos\data_ov_limpio_I.pickle", "wb")) 
+	pickle.dump(preferences_df, open(r"aplicacion\aplicacion\datos\preferences_df_limpio_I.pickle", "wb"))
+"""
 	return redirect(url_for('inicio'))
 
 @app.route('/inicio')
 def inicio():
 
-	data_ov_I = pickle.load(open("aplicacion\\aplicacion\\datos\\data_ov_limpio_I.pickle", "rb"))
-	data_stock_I= pickle.load(open("aplicacion\\aplicacion\\datos\\data_stock_limpio_I.pickle", "rb"))
-	preferencias_I = pickle.load(open("aplicacion\\aplicacion\\datos\\preferences_df_limpio_I.pickle", "rb"))
+	data_ov_I = pickle.load(open(r"aplicacion\aplicacion\datos\data_ov_limpio_I.pickle", "rb"))
+	data_stock_I= pickle.load(open(r"aplicacion\aplicacion\datos\data_stock_limpio_I.pickle", "rb"))
+	preferencias_I = pickle.load(open(r"aplicacion\aplicacion\datos\preferences_df_limpio_I.pickle", "rb"))
 
 	data_ov, data_stock = procesamiento_datos(preferencias_I, data_ov_I, data_stock_I)
 	pickle.dump(data_ov, open("aplicacion\\aplicacion\\datos\\data_ov.pickle", "wb")) 
 	pickle.dump(data_stock, open("aplicacion\\aplicacion\\datos\\data_stock.pickle", "wb")) 	
 
 
-	print("STOCK ACTUAL:",data_stock["deposito"].unique())
-	depositos = list(data_stock["deposito"].unique())	
+	print("STOCK ACTUAL:",data_stock['deposito'].unique())
+	depositos = list(data_stock['deposito'].unique())	
 
 
 	form = FormParametros(request.form)
@@ -101,7 +109,10 @@ def seleccion_parametros():
 		print("porcentaje cumplimiento:", cumplimiento,"tipo:",type(cumplimiento))
 		print("depositos seleccionados: ",depositos_seleccionados, "tipo:",type(depositos_seleccionados))
 		data_stock = pickle.load(open("aplicacion\\aplicacion\\datos\\data_stock.pickle", "rb"))
-		depositos = list(data_stock["deposito"].unique())	
+		data_ov1 = pickle.load(open("aplicacion\\aplicacion\\datos\\data_ov.pickle", "rb"))
+		data_ov2 = pd.DataFrame(data_ov1)
+		data_ov2.to_csv('lalalala.csv')
+		depositos = list(data_stock['deposito'].unique())
 		depositos_sin_picking = depositos
 		print(depositos)
 		#print("new_deposit:", new_deposit)
@@ -111,14 +122,13 @@ def seleccion_parametros():
 		print("depositos sin picking",depositos_sin_picking)
 		t = time.time()
 		#resultado = 33
-		resultado, stock_final = main(cantidad_depositos, cumplimiento, depositos_seleccionados, depositos_sin_picking )
+		resultado, stock_final = main(cantidad_depositos, cumplimiento, depositos_seleccionados, depositos )
 		resultado= round(resultado)
 		elapsed = time.time() - t
 		print("done in:",elapsed)
 		return render_template("resultado.html", resultado=resultado)
 		#return render_template("seleccion_parametros.html",form=form, depositos=depositos)
-	
-		#return render_template("error.html", error="No puedo realizar la operación")
+
 """
 		if(cumplimiento % 1 == 0):
 			time.sleep(8)

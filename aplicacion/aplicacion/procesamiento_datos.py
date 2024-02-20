@@ -19,7 +19,7 @@ def procesamiento_datos(data_pref,data_ov,data_stock):
 	#data_ov= data_ov.astype({"Boca de Entrega":"int64","articulo":"int64","nro_orden":"int64","cant_orden":"int64"}) 
 	data_ov= data_ov.astype({"boca_de_entrega":"int64","articulo":"int64","nro_orden":"int64","cant_orden":"int64",'pallets_solicitados':"float64"}) 
 
-	print(data_ov.columns)
+	#print(data_ov.columns)
 	# tratamiento preferencia de clientes
 	data_pref.rename(columns={'Boca de Entrega@Cliente (Facturación) None':'Boca de Entrega', 'Boca de Entrega@DESC' : 'Boca de Entrega DescripciÃ³n','Artículo@Cliente (Facturación) None' : 'articulo','Boca de Entrega@DESC':'nombre_del_cliente' },inplace=True)
 
@@ -61,7 +61,7 @@ def procesamiento_datos(data_pref,data_ov,data_stock):
 	# Filtrado cuando hay 0 cajas o negativos
 	data_stock = data_stock[data_stock['cajas'] > 0]
 	#print(data_stock.cajas.describe())
-	print(data_ov.columns)
+	#print(data_ov.columns)
 	return data_ov,data_stock
 
 

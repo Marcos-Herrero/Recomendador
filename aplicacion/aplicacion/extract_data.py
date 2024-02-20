@@ -15,8 +15,12 @@ PROJECT_ID = '626B1C35484F245187E0868090F1C506'
 USR = "consultas"
 PASSWORD = 'consultas'
 # STOCK_ID = '2273FA8F418706C9CCDAC6986027139F'  # Stock Recomendador Warehouse Todos los Depositos
-STOCK_ID = '106435304ACC54268D09FB880849EB13'  # Stock Recomendador Warehouse (Puede usar prompts)
-#STOCK_ID = 'CAB3B21141C2CD297BDF56A417A2876E' #Reporte Stock Dev que uso para pruebas unitarias sin tocar el reporte en produccion.
+# STOCK_ID = '106435304ACC54268D09FB880849EB13'  # Stock Recomendador Warehouse (Puede usar prompts)
+# STOCK_ID = 'CAB3B21141C2CD297BDF56A417A2876E' #Reporte Stock Dev que uso para pruebas unitarias sin tocar el reporte en produccion.
+# SALES_ID = '72B9ACBB478848E8882271A652BA42BB'
+# PREFERENCES_ID = '247B78AD4160C83FBE1CC39BD22B4508'
+
+STOCK_ID = '24CA77B248F2CE3C86DB8CAA2427C3AF' #Reporte Stock Dev que uso para pruebas unitarias sin tocar el reporte en produccion.
 SALES_ID = '72B9ACBB478848E8882271A652BA42BB'
 PREFERENCES_ID = '247B78AD4160C83FBE1CC39BD22B4508'
 
